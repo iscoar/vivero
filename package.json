@@ -4,13 +4,18 @@
   "description": "Proyecto final electronica",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server",
+    "dev": "watchify -vd -p browserify -t vueify -e public/javascripts/main.js -o public/javascripts/bundle.js"
   },
   "author": "Isco Amador",
   "license": "MIT",
   "dependencies": {
     "express": "^4.16.4",
+    "moment": "^2.22.2",
     "serialport": "^7.0.2",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
+    "vue": "^2.5.17",
+    "vueify": "^9.4.1",
+    "watchify": "^3.11.0"
   }
 }

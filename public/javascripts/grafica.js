@@ -24,7 +24,6 @@ var chart = new Chart(ctx, {
 });
 socket.on('temp', (data) => { //As a temp data is received
     console.log(data.temp);
-    document.getElementById('date').innerHTML = data.date; //update the date
     if(chart.data.labels.length != 15) { //If we have less than 15 data points in the graph
         chart.data.labels.push(data.time);  //Add time in x-asix
         chart.data.datasets.forEach((dataset) => {
