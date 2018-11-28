@@ -21,6 +21,9 @@
             },
             fontColor: {
                 type: String,
+            },
+            id: {
+                type: String,
             }
         }
     }
