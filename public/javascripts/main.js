@@ -4,8 +4,18 @@ Vue.component('card-widget', require('./components/widgets/CardWidget.vue'));
 Vue.component('card-stats-widget', require('./components/widgets/CardStatsWidget.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+        humedad: null,
+        socket: io.connect('http://localhost:3000'),
+    },
+    mounted() {
+        this.socket.on('temp', (data) => {
+            this.humedad = data.temp;
+        });
+    }
 });
+
 
 var moment = require('moment');
 require("moment/locale/es");
