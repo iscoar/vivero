@@ -17,10 +17,12 @@ var port = new SerialPort('COM5', {
 });
 var parser = port.pipe(new Readline({delimiter: '\r\n'}));
 
-parser.on('data', (temp) => { //Read data
+parser.on('data', (temp, gas, acceso) => { //Read data
     console.log(temp);
     var today = new Date();
     io.sockets.emit('temp', { time: (today.getHours())+":"+(today.getMinutes()), temp:temp}); //emit the datd i.e. {date, time, temp} to all the connected clients.
+    io.sockets.emit('gas', { gas: gas });
+    io.sockets.emit('acceso', { acceso: acceso });
 });
 
 io.on('connection', (socket) => {
