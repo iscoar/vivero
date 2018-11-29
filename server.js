@@ -17,12 +17,26 @@ var port = new SerialPort('COM5', {
 });
 var parser = port.pipe(new Readline({delimiter: '\r\n'}));
 
-parser.on('data', (temp, gas, acceso) => { //Read data
-    console.log(temp);
+parser.on('data', (datArduino) => { //Read data
+    datArduino.split(':', 1);
+    console.log(datArduino[0]);
+    console.log(datArduino[1]);
     var today = new Date();
-    io.sockets.emit('temp', { time: (today.getHours())+":"+(today.getMinutes()), temp:temp}); //emit the datd i.e. {date, time, temp} to all the connected clients.
-    io.sockets.emit('gas', { gas: gas });
-    io.sockets.emit('acceso', { acceso: acceso });
+    switch(datArduino[0]) {
+        case "humedad":
+            io.sockets.emit('temp', { time: (today.getHours())+":"+(today.getMinutes()), temp: datArduino[1]});
+            break;
+        case "LP":
+            io.sockets.emit('gas', { gas: datArduino[1] });
+            break;
+        case "acceso":
+            io.sockets.emit('acceso', { acceso: datArduino[1] });
+            break;
+        default:
+            console.log("No se esta recibiendo datos");
+    }
+    
+    
 });
 
 io.on('connection', (socket) => {

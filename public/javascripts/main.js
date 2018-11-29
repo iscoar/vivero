@@ -8,6 +8,8 @@ const app = new Vue({
     el: '#app',
     data: {
         humedad: null,
+        correctos: localStorage.getItem('aprobado') ? localStorage.getItem('aprobado') : 0,
+        incorrectos: localStorage.getItem('denegado') ? localStorage.getItem('denegado') : 0,
         socket: io.connect('http://localhost:3000'),
     },
     mounted() {
@@ -22,9 +24,25 @@ const app = new Vue({
         });
         this.socket.on('acceso', data => {
         	if (data.acceso == 1) {
-
+                let acceso = localStorage.getItem('aprobado');
+                if(acceso){
+                    acceso = 1;
+                    localStorage.setItem('aprobado', acceso);
+                } else {
+                    acceso++;
+                    localStorage.setItem('aprobado', acceso);
+                }
+                this.correctos = acceso;
         	} else if(data.acceso == 0) {
-        		
+        		let acceso = localStorage.getItem('denegado');
+                if(acceso){
+                    acceso = 1;
+                    localStorage.setItem('denegado', acceso);
+                } else {
+                    acceso++;
+                    localStorage.setItem('denegado', acceso);
+                }
+                this.incorrectos = acceso;
         	}
         })
     },
