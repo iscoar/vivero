@@ -12,19 +12,22 @@ var io = require('socket.io')(server);
 app.use(express.static('public'));
 
 var Readline = SerialPort.parsers.Readline;
-var port = new SerialPort('COM5', {
+var port = new SerialPort('COM4', {
     baudRate: 9600
 });
 var parser = port.pipe(new Readline({delimiter: '\r\n'}));
 
 parser.on('data', (datArduino) => { //Read data
-    datArduino.split(':', 1);
-    console.log(datArduino[0]);
-    console.log(datArduino[1]);
+    let datos = datArduino.split(':');
+    console.log(datos[0]);
+    console.log(datos[1]);
+    console.log(typeof datos[0]);
+    console.log(typeof parseInt(datos[1]));
     var today = new Date();
-    switch(datArduino[0]) {
+    switch(datos[0]) {
         case "humedad":
-            io.sockets.emit('temp', { time: (today.getHours())+":"+(today.getMinutes()), temp: datArduino[1]});
+            io.sockets.emit('temp', { time: (today.getHours())+":"+(today.getMinutes()), temp: parseInt(datos[1]) });
+            console.log("enviando datos de humedad");
             break;
         case "LP":
             io.sockets.emit('gas', { gas: datArduino[1] });
