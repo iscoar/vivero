@@ -17,21 +17,19 @@
 				<h1>Sistema de control de vivero</h1>
 				<h4>Fecha: <span id="date"></span></h4>
 				<h4>Hora: <span id="time"></span></h4>
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalGas">
-				  Launch demo modal
-				</button>
+
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-sm-4">
-				<card-stats-widget title="Intentos exitosos" font-color="text-success"></card-stats-widget>
+				<card-stats-widget title="Intentos exitosos" font-color="text-success" :qty="correctos"></card-stats-widget>
 			</div>
 			<div class="col-sm-4">
-				<card-stats-widget title="Intentos fallidos" font-color="text-danger"></card-stats-widget>
+				<card-stats-widget title="Intentos fallidos" font-color="text-danger" :qty="incorrectos"></card-stats-widget>
 			</div>
 			<div class="col-sm-4">
-				<card-stats-widget title="Húmedad actual" font-color="text-info" :qty="humedad ? humedad : 0"></card-stats-widget>
+				<card-stats-widget title="Humedad actual" font-color="text-info" :qty="humedad ? humedad : 0"></card-stats-widget>
 			</div>
 		</div>
 

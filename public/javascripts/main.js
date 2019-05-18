@@ -8,13 +8,13 @@ const app = new Vue({
     el: '#app',
     data: {
         humedad: null,
-        correctos: localStorage.getItem('aprobado') ? localStorage.getItem('aprobado') : 0,
-        incorrectos: localStorage.getItem('denegado') ? localStorage.getItem('denegado') : 0,
+        correctos: localStorage.getItem('aprobado') ? parseInt( localStorage.getItem('aprobado') ) : 0,
+        incorrectos: localStorage.getItem('denegado') ? parseInt( localStorage.getItem('denegado') ) : 0,
         socket: io.connect('http://localhost:3000'),
     },
     mounted() {
         this.socket.on('temp', (data) => {
-            this.humedad = this.dataToPorcentage(data.temp);
+            this.humedad = data.temp;
         });
         this.socket.on('gas', data => {
         	if (data.gas != 0 || data.gas != null || data.gas != undefined)
@@ -22,39 +22,34 @@ const app = new Vue({
         	else
         		$('#myModalGas').modal('show')
         });
-        this.socket.on('acceso', data => {
+        this.socket.on('key', data => {
+            console.log(data);
         	if (data.acceso == 1) {
                 let acceso = localStorage.getItem('aprobado');
-                if(acceso){
+                if(!acceso){
                     acceso = 1;
                     localStorage.setItem('aprobado', acceso);
                 } else {
+                    acceso = parseInt(acceso);
                     acceso++;
                     localStorage.setItem('aprobado', acceso);
                 }
+                acceso = parseInt(acceso);
                 this.correctos = acceso;
         	} else if(data.acceso == 0) {
         		let acceso = localStorage.getItem('denegado');
-                if(acceso){
+                if(!acceso){
                     acceso = 1;
                     localStorage.setItem('denegado', acceso);
                 } else {
+                    acceso = parseInt(acceso);
                     acceso++;
                     localStorage.setItem('denegado', acceso);
                 }
+                acceso = parseInt(acceso);
                 this.incorrectos = acceso;
         	}
         })
-    },
-    methods: {
-        dataToPorcentage(humedad) {
-        	if (humedad) {
-        		return 100 - ((humedad * 100) / 1023);	
-        	} else {
-        		return 0;
-        	}
-            
-        }
     }
 });
 

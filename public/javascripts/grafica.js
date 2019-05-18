@@ -7,7 +7,7 @@ var chart = new Chart(ctx, {
     data: {
     labels: [],
     datasets: [{
-        label: "Húmedad",
+        label: "Humedad",
         borderColor: "#FF5733",
         data: [],
         fill: false,
@@ -23,7 +23,6 @@ var chart = new Chart(ctx, {
 
 });
 socket.on('temp', (data) => { //As a temp data is received
-    console.log(data.temp);
     if(chart.data.labels.length != 15) { //If we have less than 15 data points in the graph
         chart.data.labels.push(data.time);  //Add time in x-asix
         chart.data.datasets.forEach((dataset) => {

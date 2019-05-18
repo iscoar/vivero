@@ -19,24 +19,26 @@ var parser = port.pipe(new Readline({delimiter: '\r\n'}));
 
 parser.on('data', (datArduino) => { //Read data
     let datos = datArduino.split(':');
-    console.log(datos[0]);
-    console.log(datos[1]);
-    console.log(typeof datos[0]);
-    console.log(typeof parseInt(datos[1]));
+    console.log(datArduino);
     var today = new Date();
     switch(datos[0]) {
         case "humedad":
-            io.sockets.emit('temp', { time: (today.getHours())+":"+(today.getMinutes()), temp: parseInt(datos[1]) });
+            let humedad = 100 - ((parseFloat(datos[1]) * 100) / 1023);
+            humedad = humedad.toFixed(1);
+            humedad = parseFloat(humedad);
+            io.sockets.emit('temp', { time: (today.getHours())+":"+(today.getMinutes()), temp: humedad });
             console.log("enviando datos de humedad");
             break;
         case "LP":
-            io.sockets.emit('gas', { gas: datArduino[1] });
+            io.sockets.emit('gas', { gas: datos[1] });
+            console.log("enviando datos de gas");
             break;
-        case "acceso":
-            io.sockets.emit('acceso', { acceso: datArduino[1] });
+        case "key":
+            io.sockets.emit('key', { acceso: datos[1] });
+            console.log("enviando datos de acceso");
             break;
         default:
-            console.log("No se esta recibiendo datos");
+            console.log("Estos datos no me importan");
     }
     
     
